@@ -1,1 +1,0 @@
-/usr/bin/g++ -g CMakeFiles/twisted-reality.dir/Source/Main.cpp.o CMakeFiles/twisted-reality.dir/Source/Game.cpp.o -o twisted-reality   -L/opt/SDL2/lib  /opt/SDL2/lib/libSDL2.so /opt/SDL2_image/lib/libSDL2_image.so 

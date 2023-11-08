@@ -1,3 +1,0 @@
-/home/oica/dev/twisted-reality/build/CMakeFiles/twisted-reality.dir
-/home/oica/dev/twisted-reality/build/CMakeFiles/edit_cache.dir
-/home/oica/dev/twisted-reality/build/CMakeFiles/rebuild_cache.dir
