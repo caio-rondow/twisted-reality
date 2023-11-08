@@ -9,7 +9,10 @@ project(${PROJECT_NAME})
 add_executable(
     ${PROJECT_NAME}
     Source/Main.cpp
-    Source/Game.cpp
+    Source/Math.cpp
+    Source/ConcreteGame.cpp
+    Source/Actors/Actor.cpp
+    Source/Components/Component.cpp
 )
 
 find_package(SDL2 2.28.2 EXACT REQUIRED)

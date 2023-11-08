@@ -1,21 +1,25 @@
-#include "Game.h"
+#include "ConcreteGame.h"
 
-/* GAME CONSTUCTOR */
-Game::Game(uint WindowWidth, uint WindowHeight):
+/* PUBLIC METHODS */
+
+/* Constructors */
+ConcreteGame::ConcreteGame(uint WindowWidth, uint WindowHeight):
+    mTicksCount(0),
     mIsRunning(true),
     mWindow(nullptr),
     mRenderer(nullptr),
+    mIsUpdatingActors(false),
     mWindowWidth(WindowWidth),
     mWindowHeight(WindowHeight)
 {
 
 }
 
-/* PUBLIC METHODS */
-bool Game::InitGame(){
+/* Game Loop */
+bool ConcreteGame::InitGame(){
     
     if( SDL_Init(SDL_INIT_VIDEO) != 0 ){
-        std::cerr << "In Bool Game::InitGame()\n";
+        std::cerr << "In Bool ConcreteGame::InitGame()\n";
         SDL_Log("Could not initialize SDL: %s", SDL_GetError());
         return false;
     }
@@ -23,13 +27,13 @@ bool Game::InitGame(){
     /* Create window and renderer*/
     mWindow = SDL_CreateWindow("Twisted Reality", 0, 0, GetWindowWidth(), GetWindowWidth(), 0);
     if(!mWindow){
-        std::cerr << "In Bool Game::InitGame()\n";
+        std::cerr << "In Bool ConcreteGame::InitGame()\n";
         SDL_Log("Could not initialize SDL window: %s", SDL_GetError());
         return false;
     }
     mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if(!mRenderer){
-        std::cerr << "In Bool Game::InitGame()\n";
+        std::cerr << "In Bool ConcreteGame::InitGame()\n";
         SDL_Log("Could not initialize SDL renderer: %s", SDL_GetError());
         return false;
     }
@@ -37,7 +41,11 @@ bool Game::InitGame(){
     return true;
 }
 
-void Game::EnterMainLoop(){
+void ConcreteGame::InitActors(){
+    // Create actors here...
+}
+
+void ConcreteGame::EnterMainLoop(){
     while(mIsRunning){
         ProcessInput();
         UpdateGame();
@@ -45,27 +53,51 @@ void Game::EnterMainLoop(){
     }
 }
 
-void Game::ShutDown(){
+void ConcreteGame::ShutDown(){
     // also delete all actors here...
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
 }
 
-void Game::Quit(){
+void ConcreteGame::Quit(){
     mIsRunning = false;
 }
 
-uint Game::GetWindowWidth() const{
+/* Game Window */
+uint ConcreteGame::GetWindowWidth() const{
     return mWindowWidth;
 }
 
-uint Game::GetWindowHeight() const{
+uint ConcreteGame::GetWindowHeight() const{
     return mWindowHeight;
 }
 
+/* Actors */
+void ConcreteGame::AddActor(Actor *actor){
+    if(mIsUpdatingActors){
+        mPendingActors.emplace_back(actor);
+    } else{
+        mActors.emplace_back(actor);
+    }
+}
+
+void ConcreteGame::RemoveActor(Actor *actor){
+    auto it = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
+    if(it != mPendingActors.end()){
+        std::iter_swap(it, mPendingActors.end()-1);
+        mPendingActors.pop_back();
+    }
+
+    it = std::find(mActors.begin(), mActors.end(), actor);
+    if(it != mActors.end()){
+        std::iter_swap(it, mActors.end()-1);
+        mActors.pop_back();
+    }
+}
+
 /* PRIVATE METHODS */
-void Game::ProcessInput(){
+void ConcreteGame::ProcessInput(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         switch (event.type)
@@ -79,11 +111,11 @@ void Game::ProcessInput(){
     // process actor's input here...
 }
 
-void Game::UpdateGame(){
+void ConcreteGame::UpdateGame(){
     // update actors here...
 }
 
-void Game::GenerateOutput(){
+void ConcreteGame::GenerateOutput(){
     /* Set draw color */
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
     /* Clear the current rendering */
