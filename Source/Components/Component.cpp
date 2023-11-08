@@ -4,7 +4,7 @@
 Component::Component(Actor *owner, int UpdateOrder):
     mOwner(owner),
     mUpdateOrder(UpdateOrder),
-    mState(ComponentState::DISABLE)
+    mState(COMPONENT_STATE_DISABLED)
 {
 
 }
@@ -22,10 +22,10 @@ const Actor &Component::GetOwner() const{
     return *mOwner;
 }
 
-void Component::SetComponentState(ComponentState state){
+void Component::SetComponentState(bool state){
     mState = state;
 }
 
 bool Component::IsComponentEnabled() const{
-    return (bool)mState;
+    return mState;
 }

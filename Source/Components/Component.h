@@ -2,12 +2,8 @@
 
 #include "../InterfaceGame.h"
 
-// class Actor;
-
-enum class ComponentState{
-    DISABLE,
-    ENABLE
-};
+#define COMPONENT_STATE_ENABLED 1
+#define COMPONENT_STATE_DISABLED 0
 
 class Component{ /* This is the Component abstract class */ 
 public:
@@ -24,12 +20,12 @@ public:
     int GetUpdateOrder() const;
     const Actor &GetOwner() const;
     /* Component state */
-    void SetComponentState(ComponentState state);
+    void SetComponentState(bool state);
     bool IsComponentEnabled() const;
 
 protected:
     /* PROTECTED ATTRIBUTES */
     Actor *mOwner;
     int mUpdateOrder;
-    ComponentState mState;
+    bool mState;
 };

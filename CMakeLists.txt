@@ -13,6 +13,7 @@ add_executable(
     Source/ConcreteGame.cpp
     Source/Actors/Actor.cpp
     Source/Components/Component.cpp
+    Source/Components/DrawComponents/DrawComponent.cpp
 )
 
 find_package(SDL2 2.28.2 EXACT REQUIRED)
