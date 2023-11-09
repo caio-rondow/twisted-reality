@@ -1,4 +1,7 @@
 #include "ConcreteGame.h"
+#include "SDL_image.h"
+#include "Actors/Piece.h"
+#include "Components/DrawComponents/DrawComponent.h"    
 
 /* PUBLIC METHODS */
 
@@ -8,7 +11,7 @@ ConcreteGame::ConcreteGame(uint WindowWidth, uint WindowHeight):
     mIsRunning(true),
     mWindow(nullptr),
     mRenderer(nullptr),
-    mIsUpdatingActors(false),
+    mUpdatingActors(false),
     mWindowWidth(WindowWidth),
     mWindowHeight(WindowHeight)
 {
@@ -38,11 +41,9 @@ bool ConcreteGame::InitGame(){
         return false;
     }
 
-    return true;
-}
+    this->InitActors();
 
-void ConcreteGame::InitActors(){
-    // Create actors here...
+    return true;
 }
 
 void ConcreteGame::EnterMainLoop(){
@@ -54,7 +55,9 @@ void ConcreteGame::EnterMainLoop(){
 }
 
 void ConcreteGame::ShutDown(){
-    // also delete all actors here...
+    for(auto actor : mActors){
+        delete actor;
+    }
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
@@ -75,7 +78,7 @@ uint ConcreteGame::GetWindowHeight() const{
 
 /* Actors */
 void ConcreteGame::AddActor(Actor *actor){
-    if(mIsUpdatingActors){
+    if(mUpdatingActors){
         mPendingActors.emplace_back(actor);
     } else{
         mActors.emplace_back(actor);
@@ -96,10 +99,23 @@ void ConcreteGame::RemoveActor(Actor *actor){
     }
 }
 
+/* Drawables */
+void ConcreteGame::AddDrawable(DrawComponent *drawable){
+    mDrawables.emplace_back(drawable);
+    std::sort(mDrawables.begin(), mDrawables.end(),[](DrawComponent* a, DrawComponent* b) {
+        return a->GetDrawOrder() < b->GetDrawOrder();
+    });
+}
+
+void ConcreteGame::RemoveDrawable(DrawComponent *drawable){
+    auto it = std::find(mDrawables.begin(), mDrawables.end(), drawable);
+    mDrawables.erase(it);
+}
+
 /* Load methods */
 SDL_Texture *ConcreteGame::LoadTexture(const std::string&TextureFile) const{
     SDL_Surface *surface = IMG_Load(TextureFile.c_str());
-    if(surface){
+    if(surface == nullptr){
         std::cerr << "In SDL_Texture* ConcreteGame::LoadTexture(const std::string& texturePath)\n";
         std::cerr << "Could not load " << TextureFile << " surface.\n";
         return nullptr;
@@ -128,11 +144,21 @@ void ConcreteGame::ProcessInput(){
         }
     }
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
-    // process actor's input here...
+    
+    for(auto actor : mActors){
+        actor->ProcessInput(state);
+    }
 }
 
 void ConcreteGame::UpdateGame(){
-    // update actors here...
+    
+    while(!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+    float DeltaTime = (float)(SDL_GetTicks() - mTicksCount) / 1000.0f;
+    if(DeltaTime > 0.05f)
+        DeltaTime = 0.05f;
+    mTicksCount = SDL_GetTicks();
+
+    UpdateActors(DeltaTime);
 }
 
 void ConcreteGame::GenerateOutput(){
@@ -140,6 +166,43 @@ void ConcreteGame::GenerateOutput(){
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
     /* Clear the current rendering */
     SDL_RenderClear(mRenderer);
+
+    for(auto drawable : mDrawables){
+        drawable->Draw(mRenderer);   
+    }
+
     /* Swap front and back buffers - actually rendering */
     SDL_RenderPresent(mRenderer);
+}
+
+void ConcreteGame::InitActors(){
+    // Create actors here...
+    new Piece(this, 'L', Vector2(0,0), 0, 0);
+}
+
+void ConcreteGame::UpdateActors(float DeltaTime){
+    
+    mUpdatingActors = true;
+
+    for(auto actor : mActors){
+        actor->Update(DeltaTime);
+    }
+
+    mUpdatingActors = false;
+
+    for(auto pending : mPendingActors){
+        mActors.emplace_back(pending);
+    }
+    mPendingActors.clear();
+
+    std::vector<Actor*> DeadActors;
+    for(auto actor : mActors){
+        if(actor->GetActorState() == ActorState::DESTROY){
+            DeadActors.emplace_back(actor);
+        }
+    }
+    
+    for(auto actor : DeadActors){
+        delete actor;
+    }
 }

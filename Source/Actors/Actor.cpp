@@ -1,4 +1,5 @@
 #include "Actor.h"
+#include "../InterfaceGame.h"
 
 /* CONSTRUCTORS AND DESTRUCTOR */
 Actor::Actor(InterfaceGame *game):
@@ -13,9 +14,9 @@ Actor::Actor(InterfaceGame *game):
 
 Actor::~Actor(){
     mGame->RemoveActor(this);
-    // for(auto component : mComponents){
-    //     delete component;
-    // }
+    for(auto component : mComponents){
+        delete component;
+    }
 }
 
 /* PUBLIC METHODS */
@@ -24,22 +25,22 @@ Actor::~Actor(){
 void Actor::Update(float DeltaTime){
 
     if(mState == ActorState::ACTIVE){
-        // for(auto component : mComponents){
-        //     if( component->IsEnabled() ){
-        //         component->Update(DeltaTime);
-        //     }
-        // }
+        for(auto component : mComponents){
+            if( component->IsComponentEnabled() ){
+                component->Update(DeltaTime);
+            }
+        }
         OnUpdate(DeltaTime); // update specific task
     }
 }
 
 void Actor::ProcessInput(const Uint8 *KeyState){
     if(mState == ActorState::ACTIVE){
-        // for(auto component : mComponents){
-        //     if( component->IsEnabled() ){
-        //         component->ProcessInput(KeyState);
-        //     }
-        // }
+        for(auto component : mComponents){
+            if( component->IsComponentEnabled() ){
+                component->ProcessInput(KeyState);
+            }
+        }
         OnProcessInput(KeyState); // process specific task
     }
 }
@@ -82,8 +83,8 @@ void Actor::SetActorState(ActorState state){
 }
 
 /* Game */
-const InterfaceGame &Actor::GetGame() const{
-    return *mGame;
+InterfaceGame *Actor::GetGame() const{
+    return mGame;
 }
 
 /* PROTECTED METHODS */
@@ -95,4 +96,12 @@ void Actor::OnUpdate(float DeltaTime){
 
 void Actor::OnProcessInput(const Uint8 *KeyState){
 
+}
+
+/* PRIVATE METHODS */
+void Actor::AddComponent(Component *component){
+    mComponents.emplace_back(component);
+    std::sort(mComponents.begin(), mComponents.end(), [](Component* a, Component* b) {
+        return a->GetUpdateOrder() < b->GetUpdateOrder();
+    });
 }

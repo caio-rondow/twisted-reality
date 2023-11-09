@@ -1,24 +1,20 @@
 #pragma once
 
+#include <SDL2/SDL.h>
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_stdinc.h>
-
 #include "Math.h"
-#include "SDL_image.h"
-#include "Actors/Actor.h"
-
-class Actor;
 
 #define BOARD_WIDTH 8
 #define BOARD_HEIGHT 4
 #define STASH_WIDTH 4
 #define STASH_HEIGHT 7
+
+class Actor;
+class DrawComponent;
 
 class InterfaceGame{ /* this is the game interface */
 public:
@@ -26,7 +22,6 @@ public:
 
     /* PUBLIC METHODS */
     virtual bool InitGame() = 0;
-    virtual void InitActors() = 0;
     virtual void EnterMainLoop() = 0;
     virtual void ShutDown() = 0;
     virtual void Quit() = 0;
@@ -34,6 +29,8 @@ public:
     virtual uint GetWindowHeight() const = 0;
     virtual void AddActor(Actor *actor) = 0;
     virtual void RemoveActor(Actor *actor) = 0;
+    virtual void AddDrawable(DrawComponent *drawable) = 0;
+    virtual void RemoveDrawable(DrawComponent *drawable) = 0;
     virtual SDL_Texture *LoadTexture(const std::string&TextureFile) const = 0;
      
 private:
@@ -41,4 +38,7 @@ private:
     virtual void ProcessInput() = 0;
     virtual void UpdateGame() = 0;
     virtual void GenerateOutput() = 0;
+    virtual void InitActors() = 0;
+    virtual void UpdateActors(float DeltaTime) = 0;
+
 };

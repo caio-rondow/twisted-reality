@@ -1,4 +1,6 @@
 #include "DrawSpriteComponent.h"
+#include "../../Actors/Actor.h"
+#include "../../InterfaceGame.h"
 
 /* CONSTRUCTOR */
 DrawSpriteComponent::DrawSpriteComponent(Actor *owner, const std::string&TextureFile, int width, int height, int DrawOrder):
@@ -6,13 +8,13 @@ DrawSpriteComponent::DrawSpriteComponent(Actor *owner, const std::string&Texture
     mWidth(width),
     mHeight(height)
 {
-    const InterfaceGame *game = &mOwner->GetGame();
+    InterfaceGame *game = mOwner->GetGame();
     mSpriteSheetSurface = game->LoadTexture(TextureFile);
 }
 
 /* draw sprite */
 void DrawSpriteComponent::Draw(SDL_Renderer *renderer){
-
+    
     Vector2 pos = mOwner->GetPosition();
     float angle = mOwner->GetRotation();
     

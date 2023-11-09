@@ -1,4 +1,6 @@
 #include "DrawComponent.h"
+#include "../../Actors/Actor.h"
+#include "../../InterfaceGame.h"
 
 /* CONSTUCTOR AND DESTRUCTOR */
 DrawComponent::DrawComponent(Actor *owner, int DrawOrder):
@@ -6,11 +8,13 @@ DrawComponent::DrawComponent(Actor *owner, int DrawOrder):
     mDrawOrder(DrawOrder),
     mState(DRAWABLE_STATE_VISIBLE)
 {
-    // mOwner->AddDrawable(this);
+    InterfaceGame *game = mOwner->GetGame();
+    game->AddDrawable(this);
 }
 
 DrawComponent::~DrawComponent(){
-    // mOwner->RemoveDrawable(this);
+    InterfaceGame *game = mOwner->GetGame();
+    game->RemoveDrawable(this);
 }
 
 /* PUBLIC METHODS */

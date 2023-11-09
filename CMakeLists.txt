@@ -12,6 +12,7 @@ add_executable(
     Source/Math.cpp
     Source/ConcreteGame.cpp
     Source/Actors/Actor.cpp
+    Source/Actors/Piece.cpp
     Source/Components/Component.cpp
     Source/Components/DrawComponents/DrawComponent.cpp
     Source/Components/DrawComponents/DrawSpriteComponent.cpp

@@ -1,14 +1,19 @@
 #pragma once
 
-#include "../InterfaceGame.h"
-
-class InterfaceGame;
+#include <SDL2/SDL.h>
+#include <iostream>
+#include <vector>
+#include "../Math.h"
+#include "../Components/Component.h"
 
 enum class ActorState{
     ACTIVE,
     PAUSED,
     DESTROY
 };
+
+class Component;
+class InterfaceGame;
 
 class Actor{ /* This is the actor abstract class */
 public:
@@ -30,7 +35,7 @@ public:
     ActorState GetActorState() const;
     void SetActorState(ActorState state);
 
-    const InterfaceGame &GetGame() const;
+    InterfaceGame *GetGame() const;
 
     // add collision here...
 
@@ -47,9 +52,10 @@ protected:
     Vector2 mPosition;
     float mScale;
     float mRotation;
-    // list of components here: std::vector<Component*> mComponents;
+    std::vector<Component*> mComponents;
 
 private:
-    // friend class Component
-    // void AddComponent(Component *c) override;
+    /* PRIVATE METHODS */
+    friend class Component;
+    void AddComponent(Component *c);
 };

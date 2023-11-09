@@ -10,7 +10,7 @@ public:
     /* CONSTUCTOR AND DESTRUCTOR */
     explicit DrawComponent(Actor *owner, int DrawOrder=10);
     ~DrawComponent() override;
-
+    
     /* PUBLIC METHODS */
     void Update(float DeltaTime) override;
     void ProcessInput(const Uint8 *KeyState) override;

@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "../Actors/Actor.h"
 
 /* CONSTRUCTOR AND DESTRUCTOR */
 Component::Component(Actor *owner, int UpdateOrder):
@@ -6,7 +7,7 @@ Component::Component(Actor *owner, int UpdateOrder):
     mUpdateOrder(UpdateOrder),
     mState(COMPONENT_STATE_DISABLED)
 {
-
+    mOwner->AddComponent(this);
 }
 
 Component::~Component(){

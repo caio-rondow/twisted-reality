@@ -1,9 +1,13 @@
 #pragma once
 
-#include "../InterfaceGame.h"
+#include <SDL2/SDL.h>
+#include <string>
+#include "../Math.h"
 
 #define COMPONENT_STATE_ENABLED 1
 #define COMPONENT_STATE_DISABLED 0
+
+class Actor;
 
 class Component{ /* This is the Component abstract class */ 
 public:
