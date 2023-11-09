@@ -14,9 +14,12 @@ public:
     /* PUBLIC METHODS */
     void Update(float DeltaTime) override;
     void ProcessInput(const Uint8 *KeyState) override;
+    /* specific for the draw component (e.g.: Sprite, Animated Sprite...) */
     virtual void Draw(SDL_Renderer *renderer);
+    /* drawable visibility */
     bool IsVisible() const;
     void SetDrawableState(bool state);
+
     int GetDrawOrder() const;
 
 protected:

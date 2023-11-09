@@ -14,6 +14,7 @@ add_executable(
     Source/Actors/Actor.cpp
     Source/Components/Component.cpp
     Source/Components/DrawComponents/DrawComponent.cpp
+    Source/Components/DrawComponents/DrawSpriteComponent.cpp
 )
 
 find_package(SDL2 2.28.2 EXACT REQUIRED)

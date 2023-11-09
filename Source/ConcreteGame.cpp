@@ -96,6 +96,26 @@ void ConcreteGame::RemoveActor(Actor *actor){
     }
 }
 
+/* Load methods */
+SDL_Texture *ConcreteGame::LoadTexture(const std::string&TextureFile) const{
+    SDL_Surface *surface = IMG_Load(TextureFile.c_str());
+    if(surface){
+        std::cerr << "In SDL_Texture* ConcreteGame::LoadTexture(const std::string& texturePath)\n";
+        std::cerr << "Could not load " << TextureFile << " surface.\n";
+        return nullptr;
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+    SDL_FreeSurface(surface);
+
+    if(texture == nullptr){
+        std::cerr << "In SDL_Texture* ConcreteGame::LoadTexture(const std::string& texturePath)\n";
+        std::cerr << "Could not load " << TextureFile << " texture.\n";
+        return nullptr;
+    }
+    return texture;
+}
+
 /* PRIVATE METHODS */
 void ConcreteGame::ProcessInput(){
     SDL_Event event;

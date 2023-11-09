@@ -10,6 +10,7 @@
 #include <SDL2/SDL_stdinc.h>
 
 #include "Math.h"
+#include "SDL_image.h"
 #include "Actors/Actor.h"
 
 class Actor;
@@ -19,9 +20,9 @@ class Actor;
 #define STASH_WIDTH 4
 #define STASH_HEIGHT 7
 
-class Game{ /* this is the game interface */
+class InterfaceGame{ /* this is the game interface */
 public:
-    virtual ~Game() = default;
+    virtual ~InterfaceGame() = default;
 
     /* PUBLIC METHODS */
     virtual bool InitGame() = 0;
@@ -33,7 +34,8 @@ public:
     virtual uint GetWindowHeight() const = 0;
     virtual void AddActor(Actor *actor) = 0;
     virtual void RemoveActor(Actor *actor) = 0;
-
+    virtual SDL_Texture *LoadTexture(const std::string&TextureFile) const = 0;
+     
 private:
     /* PRIVATE METHODS */
     virtual void ProcessInput() = 0;

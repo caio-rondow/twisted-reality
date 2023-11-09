@@ -2,7 +2,7 @@
 
 #include "InterfaceGame.h"
 
-class ConcreteGame : public Game{
+class ConcreteGame : public InterfaceGame{
 public:
     /* PUBLIC METHODS */
     
@@ -20,6 +20,8 @@ public:
     /* Actors */
     void AddActor(Actor *actor) override;
     void RemoveActor(Actor *actor) override;
+    /* Load methods */
+    SDL_Texture *LoadTexture(const std::string&TextureFile) const override;
 
 private:
     /* PRIVATE METHODS */

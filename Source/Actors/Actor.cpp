@@ -1,7 +1,7 @@
 #include "Actor.h"
 
 /* CONSTRUCTORS AND DESTRUCTOR */
-Actor::Actor(Game *game):
+Actor::Actor(InterfaceGame *game):
     mGame(game),
     mScale(1.0f),
     mRotation(0.0f),
@@ -82,7 +82,7 @@ void Actor::SetActorState(ActorState state){
 }
 
 /* Game */
-const Game &Actor::GetGame() const{
+const InterfaceGame &Actor::GetGame() const{
     return *mGame;
 }
 

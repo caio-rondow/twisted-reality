@@ -2,7 +2,7 @@
 
 #include "../InterfaceGame.h"
 
-class Game;
+class InterfaceGame;
 
 enum class ActorState{
     ACTIVE,
@@ -12,7 +12,7 @@ enum class ActorState{
 
 class Actor{ /* This is the actor abstract class */
 public:
-    Actor(Game *game);
+    Actor(InterfaceGame *game);
     virtual ~Actor();
 
     void Update(float DeltaTime);
@@ -30,7 +30,7 @@ public:
     ActorState GetActorState() const;
     void SetActorState(ActorState state);
 
-    const Game &GetGame() const;
+    const InterfaceGame &GetGame() const;
 
     // add collision here...
 
@@ -42,7 +42,7 @@ protected:
     virtual void OnProcessInput(const Uint8 *KeyState) = 0;
 
     /* PROTECTED ATTRIBUTES */
-    Game *mGame;
+    InterfaceGame *mGame;
     ActorState mState;
     Vector2 mPosition;
     float mScale;
