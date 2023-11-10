@@ -1,10 +1,12 @@
 #include "Piece.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
+#include "../Game/InterfaceGame.h"
 
 Piece::Piece(InterfaceGame *game, char type, const Vector2&origin, float rotation, bool flip):
     Actor(game),
     mType(type),
-    mFlip(flip)
+    mFlip(flip),
+    mState(PieceState::IDLE)
 {
     this->SetPosition(origin);
     this->SetRotation(rotation);
@@ -12,7 +14,7 @@ Piece::Piece(InterfaceGame *game, char type, const Vector2&origin, float rotatio
 }
 
 void Piece::OnUpdate(float DeltaTime){
-    // std::cout << "update piece!\n";
+    
 }
 
 void Piece::OnProcessInput(const Uint8 *KeyState){
@@ -20,19 +22,50 @@ void Piece::OnProcessInput(const Uint8 *KeyState){
     Vector2 pos = this->GetPosition();
     float offset = 5.0f;
 
-    if(KeyState[SDL_SCANCODE_W]){
-        this->SetPosition(Vector2(pos.x,(pos.y-offset)));
+    if(KeyState[SDL_SCANCODE_Z]){
+        mState = PieceState::MOVE;
+    } else if(KeyState[SDL_SCANCODE_X]){
+        mState = PieceState::ROTATE;
+    } else if(KeyState[SDL_SCANCODE_C]){
+        mState = PieceState::FLIP;
+    } else if(KeyState[SDL_SCANCODE_SPACE]){
+        mState = PieceState::PLACE;
+    } else{
+        mState = PieceState::IDLE;
     }
 
-    if(KeyState[SDL_SCANCODE_A]){
-        this->SetPosition(Vector2((pos.x-offset), pos.y));
+    switch (mState)
+    {
+    case PieceState::MOVE:
+        Move(KeyState);
+        break;
+    case PieceState::ROTATE:
+        Rotate(KeyState);
+        break;
+    case PieceState::FLIP:
+        Flip(KeyState);
+        break;
+    case PieceState::PLACE:
+        Place();
+        break;
+    default:
+        break;
     }
+}
 
-    if(KeyState[SDL_SCANCODE_S]){
-        this->SetPosition(Vector2(pos.x, (pos.y+offset)));
-    }
+/* Piece methods */
+void Piece::Rotate(const Uint8 *KeyState){
+    std::cout << "Rotate\n";
+}
 
-    if(KeyState[SDL_SCANCODE_D]){
-        this->SetPosition(Vector2((pos.x+offset), pos.y));
-    }
+void Piece::Flip(const Uint8 *KeyState){
+    std::cout << "Flip\n";
+}
+
+void Piece::Move(const Uint8 *KeyState){
+    std::cout << "Move\n";
+}
+
+void Piece::Place(){
+    std::cout << "Place\n";
 }

@@ -1,7 +1,7 @@
 #include "ConcreteGame.h"
 #include "SDL_image.h"
-#include "Actors/Piece.h"
-#include "Components/DrawComponents/DrawComponent.h"    
+#include "../Actors/Piece.h"
+#include "../Components/DrawComponents/DrawComponent.h"    
 
 /* PUBLIC METHODS */
 
@@ -15,7 +15,9 @@ ConcreteGame::ConcreteGame(uint WindowWidth, uint WindowHeight):
     mWindowWidth(WindowWidth),
     mWindowHeight(WindowHeight)
 {
-
+    /* Set all keys off */
+    for(int i=0; i<KEYS; i++)
+        mKeyboard[i] = false;
 }
 
 /* Game Loop */
@@ -156,14 +158,15 @@ void ConcreteGame::UpdateGame(){
     float DeltaTime = (float)(SDL_GetTicks() - mTicksCount) / 1000.0f;
     if(DeltaTime > 0.05f)
         DeltaTime = 0.05f;
+    // std::cout << "DeltaTime: " << DeltaTime << "\n";
     mTicksCount = SDL_GetTicks();
 
     UpdateActors(DeltaTime);
 }
 
 void ConcreteGame::GenerateOutput(){
-    /* Set draw color */
-    SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+    /* Set draw color 1a6946 */
+    SDL_SetRenderDrawColor(mRenderer, 0x1A, 0x69, 0x46, 0xFF);
     /* Clear the current rendering */
     SDL_RenderClear(mRenderer);
 

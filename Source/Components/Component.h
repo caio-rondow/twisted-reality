@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <string>
-#include "../Math.h"
+#include "../Utils/Math.h"
 
 #define COMPONENT_STATE_ENABLED 1
 #define COMPONENT_STATE_DISABLED 0

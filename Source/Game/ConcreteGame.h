@@ -41,6 +41,7 @@ private:
     uint mWindowWidth, mWindowHeight;
     bool mIsRunning, mUpdatingActors;
     Uint32 mTicksCount;
+    bool mKeyboard[KEYS];
     /* Game Actors */
     std::vector<Actor*> mActors;
     std::vector<Actor*> mPendingActors;

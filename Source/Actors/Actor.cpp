@@ -1,5 +1,5 @@
 #include "Actor.h"
-#include "../InterfaceGame.h"
+#include "../Game/InterfaceGame.h"
 
 /* CONSTRUCTORS AND DESTRUCTOR */
 Actor::Actor(InterfaceGame *game):

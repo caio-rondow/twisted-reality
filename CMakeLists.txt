@@ -9,8 +9,8 @@ project(${PROJECT_NAME})
 add_executable(
     ${PROJECT_NAME}
     Source/Main.cpp
-    Source/Math.cpp
-    Source/ConcreteGame.cpp
+    Source/Utils/Math.cpp
+    Source/Game/ConcreteGame.cpp
     Source/Actors/Actor.cpp
     Source/Actors/Piece.cpp
     Source/Components/Component.cpp

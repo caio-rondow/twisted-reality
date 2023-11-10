@@ -1,6 +1,6 @@
 #include "DrawSpriteComponent.h"
 #include "../../Actors/Actor.h"
-#include "../../InterfaceGame.h"
+#include "../../Game/InterfaceGame.h"
 
 /* CONSTRUCTOR */
 DrawSpriteComponent::DrawSpriteComponent(Actor *owner, const std::string&TextureFile, int width, int height, int DrawOrder):

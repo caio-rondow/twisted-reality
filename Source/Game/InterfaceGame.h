@@ -6,12 +6,13 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "Math.h"
+#include "../Utils/Math.h"
 
 #define BOARD_WIDTH 8
 #define BOARD_HEIGHT 4
 #define STASH_WIDTH 4
 #define STASH_HEIGHT 7
+#define KEYS 322
 
 class Actor;
 class DrawComponent;

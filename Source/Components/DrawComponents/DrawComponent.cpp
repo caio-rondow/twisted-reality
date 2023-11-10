@@ -1,6 +1,6 @@
 #include "DrawComponent.h"
 #include "../../Actors/Actor.h"
-#include "../../InterfaceGame.h"
+#include "../../Game/InterfaceGame.h"
 
 /* CONSTUCTOR AND DESTRUCTOR */
 DrawComponent::DrawComponent(Actor *owner, int DrawOrder):

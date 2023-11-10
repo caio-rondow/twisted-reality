@@ -1,4 +1,4 @@
-#include "ConcreteGame.h"
+#include "Game/ConcreteGame.h"
 
 const uint SCREEN_WIDTH = 800;
 const uint SCREEN_HEIGHT = 600;

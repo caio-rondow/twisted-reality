@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <vector>
-#include "../Math.h"
+#include "../Utils/Math.h"
 #include "../Components/Component.h"
 
 enum class ActorState{
