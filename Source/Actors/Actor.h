@@ -43,8 +43,8 @@ protected:
     /* PROTECTED METHODS */
     
     /* Specific actor update code */
-    virtual void OnUpdate(float DeltaTime) = 0;
-    virtual void OnProcessInput(const Uint8 *KeyState) = 0;
+    virtual void OnUpdate(float DeltaTime);
+    virtual void OnProcessInput(const Uint8 *KeyState);
 
     /* PROTECTED ATTRIBUTES */
     InterfaceGame *mGame;

@@ -12,9 +12,9 @@
 #define BOARD_HEIGHT 4
 #define STASH_WIDTH 4
 #define STASH_HEIGHT 7
-#define KEYS 322
 
 class Actor;
+class Table;
 class DrawComponent;
 
 class InterfaceGame{ /* this is the game interface */
@@ -33,7 +33,8 @@ public:
     virtual void AddDrawable(DrawComponent *drawable) = 0;
     virtual void RemoveDrawable(DrawComponent *drawable) = 0;
     virtual SDL_Texture *LoadTexture(const std::string&TextureFile) const = 0;
-     
+    virtual void LoadLevel(const std::string&LevelFile) = 0;
+
 private:
     /* PRIVATE METHODS */
     virtual void ProcessInput() = 0;
@@ -41,5 +42,4 @@ private:
     virtual void GenerateOutput() = 0;
     virtual void InitActors() = 0;
     virtual void UpdateActors(float DeltaTime) = 0;
-
 };

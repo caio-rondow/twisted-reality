@@ -1,0 +1,5 @@
+piece_t, piece_x, piece_y, piece_theta, piece_flip
+L, 0, 0, 0, 0
+L, 0, 32, 0, 0
+L, 0, 64, 0, 0
+L, 32, 64, 0, 0

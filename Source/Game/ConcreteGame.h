@@ -1,6 +1,7 @@
 #pragma once
 
 #include "InterfaceGame.h"
+#include "../Actors/Block.h"
 
 class ConcreteGame : public InterfaceGame{
 public:
@@ -24,6 +25,7 @@ public:
     void RemoveDrawable(DrawComponent *drawable) override;
     /* Load methods */
     SDL_Texture *LoadTexture(const std::string&TextureFile) const override;
+    void LoadLevel(const std::string&LevelFile) override;
 
 private:
     /* PRIVATE METHODS */
@@ -41,10 +43,12 @@ private:
     uint mWindowWidth, mWindowHeight;
     bool mIsRunning, mUpdatingActors;
     Uint32 mTicksCount;
-    bool mKeyboard[KEYS];
+
     /* Game Actors */
     std::vector<Actor*> mActors;
     std::vector<Actor*> mPendingActors;
     /* Game Drawables */
     std::vector<DrawComponent*> mDrawables;
+    /* Game Specific */
+    Table *mBoard;
 };

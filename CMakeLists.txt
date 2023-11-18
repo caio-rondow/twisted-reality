@@ -11,11 +11,16 @@ add_executable(
     Source/Main.cpp
     Source/Utils/Math.cpp
     Source/Game/ConcreteGame.cpp
+    
     Source/Actors/Actor.cpp
     Source/Actors/Piece.cpp
+    Source/Actors/Block.cpp
+    Source/Actors/Table.cpp
+
     Source/Components/Component.cpp
     Source/Components/DrawComponents/DrawComponent.cpp
     Source/Components/DrawComponents/DrawSpriteComponent.cpp
+    Source/Components/DrawComponents/DrawAnimatedComponent.cpp
 )
 
 find_package(SDL2 2.28.2 EXACT REQUIRED)

@@ -1,11 +1,15 @@
-// #pragma once
+#pragma once
 
-// #include "Actor.h"
+#include "Actor.h"
 
-// class Table : public Actor{
-// public:
-//     Table(InterfaceGame *game, uint width, uint height);
+class Block;
 
-// private:
-//     uint mWidth, mHeight;
-// };
+class Table : public Actor{
+public:
+    Table(InterfaceGame *game, uint width, uint height);
+    void OnProcessInput(const Uint8 *KeyState) override;
+private:
+    Block *mCursor;
+    std::vector<std::vector<Block*>>mTable;
+    uint mTableWidth, mTableHeight;
+};

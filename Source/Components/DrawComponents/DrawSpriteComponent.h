@@ -11,5 +11,7 @@ public:
 protected:
     /* PROTECTED ATTRIBUTES */
     SDL_Texture *mSpriteSheetSurface;
+    // bool mIsFlippedHorizontally;
+    // bool mIsFlippedVertically;
     int mWidth, mHeight;
 };

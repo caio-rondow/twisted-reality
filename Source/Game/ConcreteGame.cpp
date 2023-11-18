@@ -1,7 +1,10 @@
 #include "ConcreteGame.h"
 #include "SDL_image.h"
 #include "../Actors/Piece.h"
+#include "../Actors/Table.h"
 #include "../Components/DrawComponents/DrawComponent.h"    
+
+#include <sstream>
 
 /* PUBLIC METHODS */
 
@@ -15,9 +18,7 @@ ConcreteGame::ConcreteGame(uint WindowWidth, uint WindowHeight):
     mWindowWidth(WindowWidth),
     mWindowHeight(WindowHeight)
 {
-    /* Set all keys off */
-    for(int i=0; i<KEYS; i++)
-        mKeyboard[i] = false;
+
 }
 
 /* Game Loop */
@@ -57,8 +58,8 @@ void ConcreteGame::EnterMainLoop(){
 }
 
 void ConcreteGame::ShutDown(){
-    for(auto actor : mActors){
-        delete actor;
+    while(!mActors.empty()){
+        delete mActors.back();
     }
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
@@ -134,6 +135,35 @@ SDL_Texture *ConcreteGame::LoadTexture(const std::string&TextureFile) const{
     return texture;
 }
 
+void ConcreteGame::LoadLevel(const std::string&LevelFile){
+
+    mBoard = new Table(this, BOARD_WIDTH, BOARD_HEIGHT);
+
+    // std::ifstream ifs(LevelFile, std::ifstream::in);
+    // if(!ifs.is_open()){
+    //     std::cerr << "In void ConcreteGame::LoadLevel(const std::string&LevelFile)\n";
+    //     std::cerr << "Could not open " << LevelFile << ".\n";
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // std::string row;
+    // std::getline(ifs, row); /* ignore header */
+    // while (std::getline(ifs, row)) {
+
+    //     int x, y, theta, flip;
+    //     std::istringstream iss(row);
+    //     char piece_t, comma;
+
+    //     /* parse csv */
+    //     iss >> piece_t >> comma >> 
+    //     x >> comma >> y >> comma >> 
+    //     theta >> comma >> flip;
+
+    //     /* Create a new piece */
+    //     new Piece(this, piece_t, Vector2(x,y), theta, flip);
+    // }
+}
+
 /* PRIVATE METHODS */
 void ConcreteGame::ProcessInput(){
     SDL_Event event;
@@ -158,7 +188,7 @@ void ConcreteGame::UpdateGame(){
     float DeltaTime = (float)(SDL_GetTicks() - mTicksCount) / 1000.0f;
     if(DeltaTime > 0.05f)
         DeltaTime = 0.05f;
-    // std::cout << "DeltaTime: " << DeltaTime << "\n";
+    // std::cout << "Dt : " << DeltaTime << "\n";
     mTicksCount = SDL_GetTicks();
 
     UpdateActors(DeltaTime);
@@ -166,7 +196,7 @@ void ConcreteGame::UpdateGame(){
 
 void ConcreteGame::GenerateOutput(){
     /* Set draw color 1a6946 */
-    SDL_SetRenderDrawColor(mRenderer, 0x1A, 0x69, 0x46, 0xFF);
+    SDL_SetRenderDrawColor(mRenderer, 0x0, 0x0, 0x0, 0x0);
     /* Clear the current rendering */
     SDL_RenderClear(mRenderer);
 
@@ -180,7 +210,7 @@ void ConcreteGame::GenerateOutput(){
 
 void ConcreteGame::InitActors(){
     // Create actors here...
-    new Piece(this, 'L', Vector2(0,0), 0, 0);
+    LoadLevel("../Assets/Level/example.csv");
 }
 
 void ConcreteGame::UpdateActors(float DeltaTime){

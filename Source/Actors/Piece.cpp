@@ -20,7 +20,6 @@ void Piece::OnUpdate(float DeltaTime){
 void Piece::OnProcessInput(const Uint8 *KeyState){
     
     Vector2 pos = this->GetPosition();
-    float offset = 5.0f;
 
     if(KeyState[SDL_SCANCODE_Z]){
         mState = PieceState::MOVE;
@@ -30,7 +29,7 @@ void Piece::OnProcessInput(const Uint8 *KeyState){
         mState = PieceState::FLIP;
     } else if(KeyState[SDL_SCANCODE_SPACE]){
         mState = PieceState::PLACE;
-    } else{
+    } else if(KeyState[SDL_SCANCODE_V]){
         mState = PieceState::IDLE;
     }
 
@@ -64,6 +63,16 @@ void Piece::Flip(const Uint8 *KeyState){
 
 void Piece::Move(const Uint8 *KeyState){
     std::cout << "Move\n";
+    Vector2 pos = GetPosition();
+    float offset = 10;
+    if(KeyState[SDL_SCANCODE_D])
+        SetPosition(Vector2(pos.x+offset, pos.y));
+    if(KeyState[SDL_SCANCODE_A])
+        SetPosition(Vector2(pos.x-offset, pos.y));
+    if(KeyState[SDL_SCANCODE_W])
+        SetPosition(Vector2(pos.x, pos.y-offset));
+    if(KeyState[SDL_SCANCODE_S])
+        SetPosition(Vector2(pos.x, pos.y+offset));
 }
 
 void Piece::Place(){
