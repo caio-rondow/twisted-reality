@@ -7,9 +7,12 @@ class Block;
 class Table : public Actor{
 public:
     Table(InterfaceGame *game, uint width, uint height);
+    void OnUpdate(float DeltaTime) override;
     void OnProcessInput(const Uint8 *KeyState) override;
 private:
     Block *mCursor;
     std::vector<std::vector<Block*>>mTable;
     uint mTableWidth, mTableHeight;
+    float mTimesPassed;
+    bool mCanProcessInput;
 };

@@ -188,7 +188,7 @@ void ConcreteGame::UpdateGame(){
     float DeltaTime = (float)(SDL_GetTicks() - mTicksCount) / 1000.0f;
     if(DeltaTime > 0.05f)
         DeltaTime = 0.05f;
-    // std::cout << "Dt : " << DeltaTime << "\n";
+    std::cout << "Dt : " << DeltaTime << "\n";
     mTicksCount = SDL_GetTicks();
 
     UpdateActors(DeltaTime);

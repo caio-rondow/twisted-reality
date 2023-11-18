@@ -7,6 +7,8 @@
 #define LEFT 2 
 #define RIGHT 3 
 
+class DrawAnimatedComponent; 
+
 class Block : public Actor{
 public:
     enum BlockType{
@@ -25,8 +27,14 @@ public:
     Block *operator[](uint dir) const{
         return mAdjacents[dir];
     }
+    inline void SetSelected(const bool state){
+        mIsSelected = state;
+    }
+    void OnUpdate(float DeltaTime) override;
 
 private:
     BlockType mType;
     std::vector<Block*> mAdjacents;
+    DrawAnimatedComponent *mDrawComponent;
+    bool mIsSelected;
 };
