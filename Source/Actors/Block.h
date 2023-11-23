@@ -8,13 +8,12 @@
 #define RIGHT 3 
 
 class DrawAnimatedComponent; 
+class AABBColliderComponent;
 
 class Block : public Actor{
 public:
-    enum BlockType{
-        DEFAULT, CURSOR, TUNNEL
-    };
-    explicit Block(InterfaceGame *game, BlockType type=DEFAULT);
+    explicit Block(InterfaceGame *game, int dx=32, int dy=32, ColliderLayer layer=ColliderLayer::BLOCK);
+
     /* Add adjacenct blocks */
     inline void Link(Block *adj, uint dir){
         if(dir >= 0 && dir < 4)
@@ -31,10 +30,12 @@ public:
         mIsSelected = state;
     }
     void OnUpdate(float DeltaTime) override;
-
+    void OnCollision(std::vector<AABBColliderComponent::Overlap>& responses) override;
+ 
 private:
-    BlockType mType;
     std::vector<Block*> mAdjacents;
-    DrawAnimatedComponent *mDrawComponent;
     bool mIsSelected;
+
+    DrawAnimatedComponent *mDrawComponent;
+    AABBColliderComponent *mAABBColliderComponent;
 };

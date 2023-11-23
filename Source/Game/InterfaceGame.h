@@ -11,11 +11,12 @@
 #define BOARD_WIDTH 8
 #define BOARD_HEIGHT 4
 #define STASH_WIDTH 4
-#define STASH_HEIGHT 7
+#define STASH_HEIGHT 8
 
 class Actor;
 class Table;
 class DrawComponent;
+class Block;
 
 class InterfaceGame{ /* this is the game interface */
 public:
@@ -34,6 +35,8 @@ public:
     virtual void RemoveDrawable(DrawComponent *drawable) = 0;
     virtual SDL_Texture *LoadTexture(const std::string&TextureFile) const = 0;
     virtual void LoadLevel(const std::string&LevelFile) = 0;
+    virtual Block *GetCursor() const = 0;
+    virtual void SetCursor(Block *cursor) = 0;
 
 private:
     /* PRIVATE METHODS */

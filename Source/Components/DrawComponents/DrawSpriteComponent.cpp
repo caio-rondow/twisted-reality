@@ -21,8 +21,8 @@ void DrawSpriteComponent::Draw(SDL_Renderer *renderer){
     SDL_Rect dstrect;
     dstrect.w = mWidth;
     dstrect.h = mHeight;
-    dstrect.x = pos.x;
-    dstrect.y = pos.y;
+    dstrect.x = pos.x - 16;
+    dstrect.y = pos.y - 16;
     
     SDL_RendererFlip flip = (angle == Math::Pi ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 

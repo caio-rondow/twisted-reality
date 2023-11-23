@@ -21,6 +21,7 @@ add_executable(
     Source/Components/DrawComponents/DrawComponent.cpp
     Source/Components/DrawComponents/DrawSpriteComponent.cpp
     Source/Components/DrawComponents/DrawAnimatedComponent.cpp
+    Source/Components/ColliderComponents/AABBColliderComponent.cpp
 )
 
 find_package(SDL2 2.28.2 EXACT REQUIRED)

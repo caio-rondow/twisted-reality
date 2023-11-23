@@ -5,7 +5,7 @@
 Component::Component(Actor *owner, int UpdateOrder):
     mOwner(owner),
     mUpdateOrder(UpdateOrder),
-    mState(COMPONENT_STATE_DISABLED)
+    mState(COMPONENT_STATE_ENABLED)
 {
     mOwner->AddComponent(this);
 }
@@ -19,7 +19,7 @@ int Component::GetUpdateOrder() const{
     return mUpdateOrder;
 }
 
-const Actor &Component::GetOwner() const{
+Actor &Component::GetOwner() const{
     return *mOwner;
 }
 

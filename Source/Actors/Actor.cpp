@@ -98,6 +98,10 @@ void Actor::OnProcessInput(const Uint8 *KeyState){
 
 }
 
+void Actor::OnCollision(std::vector<AABBColliderComponent::Overlap>& responses){
+    
+}
+
 /* PRIVATE METHODS */
 void Actor::AddComponent(Component *component){
     mComponents.emplace_back(component);

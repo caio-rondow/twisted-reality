@@ -13,6 +13,7 @@ ConcreteGame::ConcreteGame(uint WindowWidth, uint WindowHeight):
     mTicksCount(0),
     mIsRunning(true),
     mWindow(nullptr),
+    mCursor(nullptr),
     mRenderer(nullptr),
     mUpdatingActors(false),
     mWindowWidth(WindowWidth),
@@ -138,30 +139,40 @@ SDL_Texture *ConcreteGame::LoadTexture(const std::string&TextureFile) const{
 void ConcreteGame::LoadLevel(const std::string&LevelFile){
 
     mBoard = new Table(this, BOARD_WIDTH, BOARD_HEIGHT);
+    mBoard->SetTablePosition(Vector2(0,0));
+    mCursor = mBoard->GetCursor(Vector2(0,0)); // get cursor at position 0,0
+    
+    // mStash = new Table(this, STASH_WIDTH, STASH_HEIGHT);
+    // mStash->SetTablePosition(Vector2(320,32));
+    // mBoard->Link(mStash, RIGHT);
 
-    // std::ifstream ifs(LevelFile, std::ifstream::in);
-    // if(!ifs.is_open()){
-    //     std::cerr << "In void ConcreteGame::LoadLevel(const std::string&LevelFile)\n";
-    //     std::cerr << "Could not open " << LevelFile << ".\n";
-    //     exit(EXIT_FAILURE);
-    // }
+    std::ifstream ifs(LevelFile, std::ifstream::in);
+    if(!ifs.is_open()){
+        std::cerr << "In void ConcreteGame::LoadLevel(const std::string&LevelFile)\n";
+        std::cerr << "Could not open " << LevelFile << ".\n";
+        exit(EXIT_FAILURE);
+    }
 
-    // std::string row;
-    // std::getline(ifs, row); /* ignore header */
-    // while (std::getline(ifs, row)) {
+    std::string row;
+    std::getline(ifs, row); /* ignore header */
+    while (std::getline(ifs, row)) {
+        int x, y, theta, flip, board;
+        std::istringstream iss(row);
+        char piece_t, comma;
 
-    //     int x, y, theta, flip;
-    //     std::istringstream iss(row);
-    //     char piece_t, comma;
+        /* parse csv */
+        iss >> piece_t >> comma >> 
+        x >> comma >> y >> comma >> 
+        theta >> comma >> flip >> comma >> board;
 
-    //     /* parse csv */
-    //     iss >> piece_t >> comma >> 
-    //     x >> comma >> y >> comma >> 
-    //     theta >> comma >> flip;
-
-    //     /* Create a new piece */
-    //     new Piece(this, piece_t, Vector2(x,y), theta, flip);
-    // }
+        /* Create a new piece */
+        Piece *piece = new Piece(this, piece_t, Vector2(x,y), theta, flip);
+        if(!board){ /* add to board */
+            mBoard->AddPiece(piece);            
+        } else{ /* add to stash */
+            // mStash->AddPiece(piece);
+        }
+    }
 }
 
 /* PRIVATE METHODS */
@@ -188,7 +199,7 @@ void ConcreteGame::UpdateGame(){
     float DeltaTime = (float)(SDL_GetTicks() - mTicksCount) / 1000.0f;
     if(DeltaTime > 0.05f)
         DeltaTime = 0.05f;
-    std::cout << "Dt : " << DeltaTime << "\n";
+    // std::cout << "Dt : " << DeltaTime << "\n";
     mTicksCount = SDL_GetTicks();
 
     UpdateActors(DeltaTime);
@@ -196,7 +207,7 @@ void ConcreteGame::UpdateGame(){
 
 void ConcreteGame::GenerateOutput(){
     /* Set draw color 1a6946 */
-    SDL_SetRenderDrawColor(mRenderer, 0x0, 0x0, 0x0, 0x0);
+    SDL_SetRenderDrawColor(mRenderer, 0x1a, 0x69, 0x46, 0xFF);
     /* Clear the current rendering */
     SDL_RenderClear(mRenderer);
 

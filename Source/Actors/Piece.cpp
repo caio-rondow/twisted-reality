@@ -1,48 +1,82 @@
 #include "Piece.h"
 #include "../Components/DrawComponents/DrawSpriteComponent.h"
 #include "../Game/InterfaceGame.h"
+#include "Block.h"
 
 Piece::Piece(InterfaceGame *game, char type, const Vector2&origin, float rotation, bool flip):
     Actor(game),
     mType(type),
     mFlip(flip),
+    mIsPieceSelected(false),
     mState(PieceState::IDLE)
 {
+    this->SetActorState(ActorState::ACTIVE);
     this->SetPosition(origin);
     this->SetRotation(rotation);
-    new DrawSpriteComponent(this, "../Assets/Sprite/Block.png", 32, 32);
+    mDrawComponent = new DrawSpriteComponent(this, "../Assets/Sprite/L.png", 64, 96, 10);
+
+    switch (type)
+    {
+    case 'L':
+
+        mColliders.emplace_back(new AABBColliderComponent(this, Vector2(0,0), 32, 96, ColliderLayer::PIECE));
+        // mColliders.emplace_back(this, Vector2(0,0), );
+
+        break;
+    
+    default:
+        break;
+    }
+    
 }
 
 void Piece::OnUpdate(float DeltaTime){
+    // std::cout << GetPosition().x << " " << GetPosition().y << "\n";   
+}
+
+void Piece::DetectCollision(){
+
     
+
 }
 
 void Piece::OnProcessInput(const Uint8 *KeyState){
     
     Vector2 pos = this->GetPosition();
 
-    if(KeyState[SDL_SCANCODE_Z]){
-        mState = PieceState::MOVE;
-    } else if(KeyState[SDL_SCANCODE_X]){
-        mState = PieceState::ROTATE;
-    } else if(KeyState[SDL_SCANCODE_C]){
-        mState = PieceState::FLIP;
-    } else if(KeyState[SDL_SCANCODE_SPACE]){
-        mState = PieceState::PLACE;
-    } else if(KeyState[SDL_SCANCODE_V]){
-        mState = PieceState::IDLE;
+    if(mIsPieceSelected){
+
+        DetectCollision();
+
+        if(KeyState[SDL_SCANCODE_Z]){
+            std::cout << "STATE SELECTED: MOVE\n";
+            mState = PieceState::MOVE;
+            mIsPieceSelected = false;
+        } else if(KeyState[SDL_SCANCODE_X]){
+            std::cout << "STATE SELECTED: ROTATE\n";
+            mState = PieceState::ROTATE;
+            mIsPieceSelected = false;
+        } else if(KeyState[SDL_SCANCODE_C]){
+            std::cout << "STATE SELECTED: FLIP\n";
+            mState = PieceState::FLIP;
+            mIsPieceSelected = false;
+        } else if(KeyState[SDL_SCANCODE_V]){
+            std::cout << "STATE SELECTED: IDLE\n";
+            mState = PieceState::IDLE;
+            mIsPieceSelected = false;
+        }
     }
 
     switch (mState)
     {
     case PieceState::MOVE:
-        Move(KeyState);
+        Move();
         break;
     case PieceState::ROTATE:
-        Rotate(KeyState);
+        Rotate();
         break;
     case PieceState::FLIP:
-        Flip(KeyState);
+        Flip();
         break;
     case PieceState::PLACE:
         Place();
@@ -53,28 +87,27 @@ void Piece::OnProcessInput(const Uint8 *KeyState){
 }
 
 /* Piece methods */
-void Piece::Rotate(const Uint8 *KeyState){
-    std::cout << "Rotate\n";
+void Piece::Rotate(){
+    float rotation = GetRotation();
+    SetRotation(rotation+90.0f);
+    mState = PieceState::IDLE;
 }
 
-void Piece::Flip(const Uint8 *KeyState){
-    std::cout << "Flip\n";
+void Piece::Flip(){
+    // std::cout << "Flip\n";
 }
 
-void Piece::Move(const Uint8 *KeyState){
-    std::cout << "Move\n";
-    Vector2 pos = GetPosition();
-    float offset = 10;
-    if(KeyState[SDL_SCANCODE_D])
-        SetPosition(Vector2(pos.x+offset, pos.y));
-    if(KeyState[SDL_SCANCODE_A])
-        SetPosition(Vector2(pos.x-offset, pos.y));
-    if(KeyState[SDL_SCANCODE_W])
-        SetPosition(Vector2(pos.x, pos.y-offset));
-    if(KeyState[SDL_SCANCODE_S])
-        SetPosition(Vector2(pos.x, pos.y+offset));
+void Piece::Move(){
+    /* Set piece position equals to the cursor */
+    Vector2 CursorPos = mGame->GetCursor()->GetPosition();
+    SetPosition(CursorPos - Vector2(16,16));
 }
 
 void Piece::Place(){
-    std::cout << "Place\n";
+    // std::cout << "Place\n";
+}
+
+void Piece::OnCollision(){
+    mIsPieceSelected = true;
+    std::cout << "aspdoaskd\n";
 }

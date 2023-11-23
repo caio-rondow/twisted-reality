@@ -22,7 +22,7 @@ public:
     virtual void ProcessInput(const Uint8 *KeyState) = 0;
     /* Actor related */
     int GetUpdateOrder() const;
-    const Actor &GetOwner() const;
+    Actor &GetOwner() const;
     /* Component state */
     void SetComponentState(bool state);
     bool IsComponentEnabled() const;

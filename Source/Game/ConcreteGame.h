@@ -26,6 +26,13 @@ public:
     /* Load methods */
     SDL_Texture *LoadTexture(const std::string&TextureFile) const override;
     void LoadLevel(const std::string&LevelFile) override;
+    /* Game specific */
+    inline Block *GetCursor() const override{
+        return mCursor;
+    }
+    inline void SetCursor(Block *cursor) override{
+        mCursor = cursor;
+    }
 
 private:
     /* PRIVATE METHODS */
@@ -51,4 +58,6 @@ private:
     std::vector<DrawComponent*> mDrawables;
     /* Game Specific */
     Table *mBoard;
+    Table *mStash;
+    Block *mCursor;
 };

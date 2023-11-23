@@ -5,6 +5,7 @@
 #include <vector>
 #include "../Utils/Math.h"
 #include "../Components/Component.h"
+#include "../Components/ColliderComponents/AABBColliderComponent.h"
 
 enum class ActorState{
     ACTIVE,
@@ -16,6 +17,7 @@ class Component;
 class InterfaceGame;
 
 class Actor{ /* This is the actor abstract class */
+friend class Component;
 public:
     Actor(InterfaceGame *game);
     virtual ~Actor();
@@ -37,8 +39,22 @@ public:
 
     InterfaceGame *GetGame() const;
 
-    // add collision here...
+    virtual void OnCollision(std::vector<AABBColliderComponent::Overlap>& responses);
 
+    template <typename T>
+    T* GetComponent() const{
+        for (auto c : mComponents){
+            T* t = dynamic_cast<T*>(c);
+            if (t != nullptr){
+                return t;
+            }
+        }
+        return nullptr;
+    }
+
+    virtual void OnCollision(){};
+
+    
 protected:
     /* PROTECTED METHODS */
     
@@ -56,6 +72,5 @@ protected:
 
 private:
     /* PRIVATE METHODS */
-    friend class Component;
     void AddComponent(Component *c);
 };

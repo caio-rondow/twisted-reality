@@ -12,6 +12,9 @@ enum class PieceState{
     IDLE
 };
 
+class DrawComponent;
+class AABBColliderComponent;
+
 class Piece : public Actor{
 public:
     explicit Piece(InterfaceGame *game, char type, const Vector2&origin, float rotation, bool flip);
@@ -19,14 +22,25 @@ public:
     /* PUBLIC METHODS */
     void OnUpdate(float DeltaTime) override;
     void OnProcessInput(const Uint8 *KeyState) override;
+    void OnCollision() override;
     /* Piece methods */
-    void Rotate(const Uint8 *KeyState);
-    void Flip(const Uint8 *KeyState);
-    void Move(const Uint8 *KeyState);
+    void Rotate();
+    void Flip();
+    void Move();
     void Place();
+
+    std::vector<AABBColliderComponent*> GetCollider() const{
+        return mColliders;
+    }
+
+    void DetectCollision();
+    
 
 private:
     bool mFlip;
     char mType;
+    bool mIsPieceSelected;
     PieceState mState;
+    DrawComponent *mDrawComponent;
+    std::vector<AABBColliderComponent*> mColliders;
 };
